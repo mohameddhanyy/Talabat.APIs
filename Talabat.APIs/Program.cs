@@ -10,7 +10,7 @@ namespace Talabat.APIs
         public static async Task Main(string[] args)
         {
 
-
+            //finish session one and merge
 
             var webApplicationBuilder = WebApplication.CreateBuilder(args);
 
