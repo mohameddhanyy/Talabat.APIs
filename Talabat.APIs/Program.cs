@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Talabat.Core.Repositories.Contract;
+using Talabat.Repository;
 using Talabat.Repository.Data;
 
 namespace Talabat.APIs
@@ -8,7 +10,7 @@ namespace Talabat.APIs
         public static async Task Main(string[] args)
         {
 
-
+            //finish session one and merge
 
             var webApplicationBuilder = WebApplication.CreateBuilder(args);
 
@@ -22,28 +24,33 @@ namespace Talabat.APIs
 
             webApplicationBuilder.Services.AddDbContext<StoreContext>(options =>
             {
-                options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
+                options.UseLazyLoadingProxies().UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 
             #endregion      
 
             var app = webApplicationBuilder.Build();
 
-            var scope = app.Services.CreateScope();
+
+            // Update Database when Running 
+            using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
             var _dbContext = services.GetRequiredService<StoreContext>();
             var loggerFactory = services.GetRequiredService<ILoggerFactory>();
             try
             {
                 await _dbContext.Database.MigrateAsync();
-
+                await DataSeedingContext.Seed(_dbContext);
             }
             catch (Exception ex)
             {
                 var logger = loggerFactory.CreateLogger<Program>();
                 logger.LogError(ex, "an error occured when apply update database");
             }
+
             #region Configre Kestral Middlewares
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

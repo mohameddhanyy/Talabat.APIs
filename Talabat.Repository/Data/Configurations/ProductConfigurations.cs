@@ -15,7 +15,7 @@ namespace Talabat.Repository.Data.Configurations
         {
             builder.Property(P => P.Name)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(100);
 
             builder.Property(P => P.Description)
                 .IsRequired();
@@ -32,7 +32,7 @@ namespace Talabat.Repository.Data.Configurations
 
             builder.HasOne(P => P.Category)
                 .WithMany()
-                .HasForeignKey(P => P.CategorytId);
+                .HasForeignKey(P => P.CategoryId);
         }
     }
 }
