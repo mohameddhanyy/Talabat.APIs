@@ -15,8 +15,7 @@ namespace Talabat.Core.Entities
 
         public int BrandId { get; set; }
         public ProductBrand Brand { get; set; }
-        
-        public int CategorytId { get; set; }
+        public int CategoryId { get; set; }
         public ProductCategory Category { get; set; }
     }
 }

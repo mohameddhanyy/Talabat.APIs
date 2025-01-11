@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Talabat.Repository;
 using Talabat.Repository.Data;
 
 namespace Talabat.APIs
@@ -30,20 +31,23 @@ namespace Talabat.APIs
 
             var app = webApplicationBuilder.Build();
 
-            var scope = app.Services.CreateScope();
+
+            // Update Database when Running 
+            using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
             var _dbContext = services.GetRequiredService<StoreContext>();
             var loggerFactory = services.GetRequiredService<ILoggerFactory>();
             try
             {
                 await _dbContext.Database.MigrateAsync();
-
+                await DataSeedingContext.Seed(_dbContext);
             }
             catch (Exception ex)
             {
                 var logger = loggerFactory.CreateLogger<Program>();
                 logger.LogError(ex, "an error occured when apply update database");
             }
+
             #region Configre Kestral Middlewares
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
