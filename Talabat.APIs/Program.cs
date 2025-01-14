@@ -1,4 +1,9 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Talabat.APIs.CustomMiddleware;
+using Talabat.APIs.Errors;
+using Talabat.APIs.Extentions;
+using Talabat.APIs.Helpers;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Repository;
 using Talabat.Repository.Data;
@@ -9,33 +14,26 @@ namespace Talabat.APIs
     {
         public static async Task Main(string[] args)
         {
-
-            //finish session one and merge
-            //start working in session 2
+            
             var webApplicationBuilder = WebApplication.CreateBuilder(args);
 
-            #region Configre Services
-            // Add services to the container.
-
+            #region Configre Services 
+            //Add services to the container.
             webApplicationBuilder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            webApplicationBuilder.Services.AddEndpointsApiExplorer();
-            webApplicationBuilder.Services.AddSwaggerGen();
+
+            webApplicationBuilder.Services.AddSwaggerServices();
 
             webApplicationBuilder.Services.AddDbContext<StoreContext>(options =>
             {
                 options.UseLazyLoadingProxies().UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-
+            webApplicationBuilder.Services.AddAppServices();
             #endregion      
 
             var app = webApplicationBuilder.Build();
 
-
-            // Update Database when Running 
+            #region Update Database When Run
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
             var _dbContext = services.GetRequiredService<StoreContext>();
@@ -49,23 +47,29 @@ namespace Talabat.APIs
             {
                 var logger = loggerFactory.CreateLogger<Program>();
                 logger.LogError(ex, "an error occured when apply update database");
-            }
+            } 
+            #endregion
 
             #region Configre Kestral Middlewares
+
+            app.UseMiddleware<ExceptionMiddleware>();
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                app.AddSwaggerMiddlewares();
             }
+            app.UseStatusCodePagesWithRedirects("errors/{0}");
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
-
+            app.UseStaticFiles();
 
             app.MapControllers();
 
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             #endregion    
 
