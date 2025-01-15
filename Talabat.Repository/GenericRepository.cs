@@ -20,7 +20,7 @@ namespace Talabat.Repository
         {
             _dbContext = dbContext;
         }
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             return await _dbContext.Set<T>().ToListAsync();
         }
@@ -30,7 +30,7 @@ namespace Talabat.Repository
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public async Task<IEnumerable<T>> GetAllWithSpecsAsync(ISpecifications<T> specs)
+        public async Task<IReadOnlyList<T>> GetAllWithSpecsAsync(ISpecifications<T> specs)
         {
             return await ApplySpecification(specs).ToListAsync();
         }
@@ -40,10 +40,15 @@ namespace Talabat.Repository
             return await ApplySpecification(specs).FirstOrDefaultAsync();
 
         }
+        public async Task<int> GetPaginationCount(ISpecifications<T> specs)
+        {
+            return await ApplySpecification(specs).CountAsync();
+        }
 
         private IQueryable<T> ApplySpecification(ISpecifications<T> specs)
         {
             return SpecificationsEvaluator<T>.GetQuery(_dbContext.Set<T>(), specs); 
         }
+
     }
 }

@@ -11,9 +11,11 @@ namespace Talabat.Core.Repositories.Contract
     public interface IGenericRepository<T> where T : BaseEntity
     {
         Task<T?> GetAsync(int id);
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IReadOnlyList<T>> GetAllAsync();
         Task<T?> GetWithSpecsAsync(ISpecifications<T> specs);
-        Task<IEnumerable<T>> GetAllWithSpecsAsync(ISpecifications<T> specs);
+        Task<IReadOnlyList<T>> GetAllWithSpecsAsync(ISpecifications<T> specs);
+
+        Task<int> GetPaginationCount(ISpecifications<T> specs);
 
 
 
