@@ -15,6 +15,8 @@ namespace Talabat.Core.Repositories.Contract
         Task<T?> GetWithSpecsAsync(ISpecifications<T> specs);
         Task<IReadOnlyList<T>> GetAllWithSpecsAsync(ISpecifications<T> specs);
 
+        Task<int> GetPaginationCount(ISpecifications<T> specs);
+
 
 
     }

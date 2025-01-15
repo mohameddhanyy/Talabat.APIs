@@ -40,10 +40,15 @@ namespace Talabat.Repository
             return await ApplySpecification(specs).FirstOrDefaultAsync();
 
         }
+        public async Task<int> GetPaginationCount(ISpecifications<T> specs)
+        {
+            return await ApplySpecification(specs).CountAsync();
+        }
 
         private IQueryable<T> ApplySpecification(ISpecifications<T> specs)
         {
             return SpecificationsEvaluator<T>.GetQuery(_dbContext.Set<T>(), specs); 
         }
+
     }
 }
