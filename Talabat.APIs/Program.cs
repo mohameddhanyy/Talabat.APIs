@@ -35,7 +35,7 @@ namespace Talabat.APIs
             {
                 var connection = webApplicationBuilder.Configuration.GetConnectionString("Redis");
                 return ConnectionMultiplexer.Connect(connection);
-            })
+            });
 
             webApplicationBuilder.Services.AddAppServices();
             #endregion      

@@ -1,6 +1,6 @@
 ﻿namespace Talabat.Core.Entities
 {
-    public class BakestItem
+    public class BasketItem
     {
         public int Id { get; set; }
         public string ProductName { get; set; }
