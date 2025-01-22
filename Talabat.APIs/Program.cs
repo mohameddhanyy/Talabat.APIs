@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -5,9 +6,11 @@ using Talabat.APIs.CustomMiddleware;
 using Talabat.APIs.Errors;
 using Talabat.APIs.Extentions;
 using Talabat.APIs.Helpers;
+using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Repository;
 using Talabat.Repository.Data;
+using Talabat.Repository.Identity;
 
 namespace Talabat.APIs
 {
@@ -31,6 +34,10 @@ namespace Talabat.APIs
             {
                 options.UseLazyLoadingProxies().UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            webApplicationBuilder.Services.AddDbContext<AppIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("IdentityConnection"));
+            });
 
             webApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>((serviceProvider) =>
             {
@@ -39,6 +46,7 @@ namespace Talabat.APIs
             });
 
             webApplicationBuilder.Services.AddAppServices();
+            webApplicationBuilder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>();
             #endregion      
 
             var app = webApplicationBuilder.Build();
@@ -47,11 +55,15 @@ namespace Talabat.APIs
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
             var _dbContext = services.GetRequiredService<StoreContext>();
+            var _identityDbContext = services.GetRequiredService<AppIdentityDbContext>();
+            var _userManager = services.GetRequiredService<UserManager<AppUser>>();
             var loggerFactory = services.GetRequiredService<ILoggerFactory>();
             try
             {
                 await _dbContext.Database.MigrateAsync();
                 await DataSeedingContext.Seed(_dbContext);
+                await _identityDbContext.Database.MigrateAsync();
+                await AppIdentityDbContextSeed.SeedUserAsync(_userManager);
             }
             catch (Exception ex)
             {
