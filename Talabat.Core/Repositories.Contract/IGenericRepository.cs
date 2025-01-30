@@ -17,6 +17,10 @@ namespace Talabat.Core.Repositories.Contract
 
         Task<int> GetPaginationCount(ISpecifications<T> specs);
 
+        Task AddAsync(T entity);
+        void Update(T entity);
+        void Delete(T entity);
+
 
 
     }
