@@ -1,10 +1,10 @@
 ﻿using System.Text.Json;
 using Talabat.Core.Entities;
-using Talabat.Repository.Data;
+using Talabat.Core.Entities.Order_Aggregate;
 
-namespace Talabat.Repository
+namespace Talabat.Repository.Data
 {
-    public static class DataSeedingContext
+    public static class StoreContextSeed
     {
         public static async Task Seed(StoreContext _dbContext)
         {
@@ -49,6 +49,21 @@ namespace Talabat.Repository
                     await _dbContext.SaveChangesAsync();
                 }
             }
+
+            if (_dbContext.DeliveryMethods.Count() == 0)
+            {
+                var deliveryData = File.ReadAllText("../Talabat.Repository/Data/DataSeed/delivery.json");
+                var deliveryMethods = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryData);
+                if (deliveryMethods?.Count() > 0)
+                {
+                    foreach (var data in deliveryMethods)
+                    {
+                        _dbContext.DeliveryMethods.Add(data);
+                    }
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
+
         }
     }
 }
