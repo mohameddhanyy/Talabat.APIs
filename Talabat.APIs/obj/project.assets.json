@@ -2489,6 +2489,19 @@
         "runtime": {
           "bin/placeholder/Talabat.Repository.dll": {}
         }
+      },
+      "Talabat.Service/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Talabat.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Talabat.Service.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Talabat.Service.dll": {}
+        }
       }
     }
   },
@@ -7911,6 +7924,11 @@
       "type": "project",
       "path": "../Talabat.Repository/Talabat.Repository.csproj",
       "msbuildProject": "../Talabat.Repository/Talabat.Repository.csproj"
+    },
+    "Talabat.Service/1.0.0": {
+      "type": "project",
+      "path": "../Talabat.Service/Talabat.Service.csproj",
+      "msbuildProject": "../Talabat.Service/Talabat.Service.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -7919,7 +7937,8 @@
       "Microsoft.EntityFrameworkCore.Proxies >= 6.0.36",
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.36",
       "Swashbuckle.AspNetCore >= 6.5.0",
-      "Talabat.Repository >= 1.0.0"
+      "Talabat.Repository >= 1.0.0",
+      "Talabat.Service >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -7960,6 +7979,9 @@
           "projectReferences": {
             "C:\\Users\\Mohammed\\source\\repos\\Talabat_Route_APIs\\Talabat.Repository\\Talabat.Repository.csproj": {
               "projectPath": "C:\\Users\\Mohammed\\source\\repos\\Talabat_Route_APIs\\Talabat.Repository\\Talabat.Repository.csproj"
+            },
+            "C:\\Users\\Mohammed\\source\\repos\\Talabat_Route_APIs\\Talabat.Service\\Talabat.Service.csproj": {
+              "projectPath": "C:\\Users\\Mohammed\\source\\repos\\Talabat_Route_APIs\\Talabat.Service\\Talabat.Service.csproj"
             }
           }
         }
@@ -8021,13 +8043,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102\\RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json."
-    }
-  ]
+  }
 }

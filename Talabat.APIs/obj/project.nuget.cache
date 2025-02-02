@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "1beWZq5lYA4=",
+  "dgSpecHash": "a+uM+l6ZyX4=",
   "success": true,
   "projectFilePath": "C:\\Users\\Mohammed\\source\\repos\\Talabat_Route_APIs\\Talabat.APIs\\Talabat.APIs.csproj",
   "expectedPackageFiles": [
@@ -144,12 +144,5 @@
     "C:\\Users\\Mohammed\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\Mohammed\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json."
-    }
-  ]
+  "logs": []
 }
