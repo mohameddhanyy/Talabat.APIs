@@ -47,8 +47,13 @@ namespace Talabat.Repository
 
         private IQueryable<T> ApplySpecification(ISpecifications<T> specs)
         {
-            return SpecificationsEvaluator<T>.GetQuery(_dbContext.Set<T>(), specs); 
+            return SpecificationsEvaluator<T>.GetQuery(_dbContext.Set<T>(), specs);
         }
 
+        public async Task AddAsync(T entity) => await _dbContext.AddAsync(entity);
+
+        public void Update(T entity) => _dbContext.Update(entity);
+
+        public void Delete(T entity) => _dbContext.Remove(entity);
     }
 }

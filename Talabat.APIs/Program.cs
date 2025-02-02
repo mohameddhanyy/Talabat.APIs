@@ -8,7 +8,6 @@ using Talabat.APIs.Extentions;
 using Talabat.APIs.Helpers;
 using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repositories.Contract;
-using Talabat.Repository;
 using Talabat.Repository.Data;
 using Talabat.Repository.Identity;
 
@@ -61,7 +60,7 @@ namespace Talabat.APIs
             try
             {
                 await _dbContext.Database.MigrateAsync();
-                await DataSeedingContext.Seed(_dbContext);
+                await StoreContextSeed.Seed(_dbContext);
                 await _identityDbContext.Database.MigrateAsync();
                 await AppIdentityDbContextSeed.SeedUserAsync(_userManager);
             }
