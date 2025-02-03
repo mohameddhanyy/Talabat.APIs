@@ -30,5 +30,13 @@ namespace Talabat.APIs.Controllers
             if (createdOrder == null) return BadRequest(new ApiResponse(400));
             return Ok(createdOrder);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IReadOnlyList<Order>>> GetOrdersForUser(string email)
+        {
+           var orders = await _orderService.GetOrdersForUserAsync(email);
+           return Ok(orders);
+        }
+
     }
 }
