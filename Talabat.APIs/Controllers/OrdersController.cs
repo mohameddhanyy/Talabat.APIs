@@ -14,19 +14,18 @@ namespace Talabat.APIs.Controllers
         private readonly IMapper _mapper;
 
         public OrdersController(IOrderService orderService
-            ,IMapper mapper)
+            , IMapper mapper)
         {
             _orderService = orderService;
             _mapper = mapper;
         }
-        [ProducesResponseType(typeof(Order),StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status400BadRequest)]
-
+        [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [HttpPost]
         public async Task<ActionResult<Order>> CreateOrder(OrderDto order)
         {
-            var address = _mapper.Map<AddressDto,Address>(order.ShippingAddress);
-            var createdOrder =  await _orderService.CreateOrderAsync(order.BuyerEmail, order.BasketId, order.DeliveryMethodId, address);
+            var address = _mapper.Map<AddressDto, Address>(order.ShippingAddress);
+            var createdOrder = await _orderService.CreateOrderAsync(order.BuyerEmail, order.BasketId, order.DeliveryMethodId, address);
             if (createdOrder == null) return BadRequest(new ApiResponse(400));
             return Ok(createdOrder);
         }
@@ -34,9 +33,19 @@ namespace Talabat.APIs.Controllers
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<Order>>> GetOrdersForUser(string email)
         {
-           var orders = await _orderService.GetOrdersForUserAsync(email);
-           return Ok(orders);
+            var orders = await _orderService.GetOrdersForUserAsync(email);
+            return Ok(orders);
         }
 
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Order>> GetOrderForUser(int id, string email)
+        {
+            var order = await _orderService.GetOrderByIdForUserAsync(id, email);
+            if (order == null) return BadRequest(new ApiResponse(400));
+            return Ok(order);
+        }
     }
 }

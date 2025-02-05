@@ -52,25 +52,29 @@ namespace Talabat.Service
             var deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetAsync(deliveryMethodId);
 
             // 5. Create Order 
-            var order = new Order(buyerEmail,shippingAddress,deliveryMethod,orderItems,subTotal);
+            var order = new Order(buyerEmail, shippingAddress, deliveryMethod, orderItems, subTotal);
             await _unitOfWork.Repository<Order>().AddAsync(order);
 
             // 6. Save Changes
             var result = await _unitOfWork.CompleteAsync();
             if (result <= 0) return null;
             return order;
-            }
+        }
 
         public Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string buyerEmail)
         {
             var ordersRepo = _unitOfWork.Repository<Order>();
             var specs = new OrderSpecifications(buyerEmail);
             var orders = ordersRepo.GetAllWithSpecsAsync(specs);
-            return orders;        }
+            return orders;
+        }
 
-        public Task<Order> GetOrderByIdForUserAsync(string buyerEmail, int orderId)
+        public Task<Order?> GetOrderByIdForUserAsync(int orderId, string buyerEmail)
         {
-            throw new NotImplementedException();
+            var orderRepo = _unitOfWork.Repository<Order>();
+            var specs = new OrderSpecifications(orderId, buyerEmail);
+            var order = orderRepo.GetWithSpecsAsync(specs);
+            return order;
         }
     }
 }
