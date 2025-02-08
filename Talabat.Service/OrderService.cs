@@ -76,5 +76,12 @@ namespace Talabat.Service
             var order = orderRepo.GetWithSpecsAsync(specs);
             return order;
         }
+
+
+        public async Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
+        {
+            var deliveryMethods = _unitOfWork.Repository<DeliveryMethod>();
+            return await deliveryMethods.GetAllAsync();
+        }
     }
 }
