@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "a+uM+l6ZyX4=",
+  "dgSpecHash": "CALVlHABFwI=",
   "success": true,
   "projectFilePath": "C:\\Users\\Mohammed\\source\\repos\\Talabat_Route_APIs\\Talabat.APIs\\Talabat.APIs.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\Mohammed\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\Mohammed\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",
     "C:\\Users\\Mohammed\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
+    "C:\\Users\\Mohammed\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.36\\microsoft.aspnetcore.authentication.jwtbearer.6.0.36.nupkg.sha512",
     "C:\\Users\\Mohammed\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.36\\microsoft.aspnetcore.cryptography.internal.6.0.36.nupkg.sha512",
     "C:\\Users\\Mohammed\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.36\\microsoft.aspnetcore.cryptography.keyderivation.6.0.36.nupkg.sha512",
     "C:\\Users\\Mohammed\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.36\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.36.nupkg.sha512",
