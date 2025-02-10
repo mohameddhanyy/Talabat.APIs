@@ -40,6 +40,7 @@ namespace Talabat.Service
                 audience: _configuration["JWT:ValidAudience"],
                 issuer: _configuration["JWT:ValidIssure"],
                 expires: DateTime.UtcNow.AddDays(double.Parse(_configuration["JWT:DurationInDays"])),
+                claims: authClaims,
                 signingCredentials: new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256Signature)
                 );
 
