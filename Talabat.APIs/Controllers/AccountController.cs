@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Talabat.APIs.Dtos;
 using Talabat.APIs.Errors;
+using Talabat.APIs.Extentions;
 using Talabat.Core.Entities.Identity;
 using Talabat.Core.Services.Contract;
 
@@ -15,15 +17,17 @@ namespace Talabat.APIs.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IAuthService _authService;
+        private readonly IMapper _mapper;
 
         public AccountController(UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
-            IAuthService authService)
+            IAuthService authService,
+            IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _authService = authService;
-
+            _mapper = mapper;
         }
 
         [HttpPost("login")]
@@ -44,6 +48,9 @@ namespace Talabat.APIs.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> register(RegisterDto model)
         {
+            if (CheckEmailExists(model.Email).Result.Value)
+                return BadRequest(new ApiValidationResponse() { Errors = new string[] { "this email is already in use" } });
+
             var user = new AppUser()
             {
                 Email = model.Email,
@@ -71,9 +78,37 @@ namespace Talabat.APIs.Controllers
             {
                 DisplayName = user.DisplayName,
                 Email = user.Email,
-                Token = await _authService.CreateTokenAsync(user,_userManager)
+                Token = await _authService.CreateTokenAsync(user, _userManager)
             });
         }
 
+        [Authorize]
+        [HttpGet("address")]
+        public async Task<ActionResult<AddressDto>> GetUserAddress()
+        {
+            var user = await _userManager.FindUserWithAddressAsync(User);
+            var address = _mapper.Map<AddressDto>(user.Address);
+            return address;
+        }
+
+        [Authorize]
+        [HttpPut("address")]
+        public async Task<ActionResult<AddressDto>> UdateUserAddress(AddressDto updatedAddress)
+        {
+            var address = _mapper.Map<AddressDto,Address>(updatedAddress);
+            var user = await _userManager.FindUserWithAddressAsync(User);
+
+            address.Id = user.Address.Id; 
+            user.Address = address;
+
+            var result = await _userManager.UpdateAsync(user);
+            if(!result.Succeeded) return BadRequest(new ApiResponse(400));
+            return Ok(updatedAddress);
+        }
+
+        [Authorize]
+        [HttpGet("emailexists")]
+        public async Task<ActionResult<bool>> CheckEmailExists(string email)
+            => await _userManager.FindByEmailAsync(email) is not null;
     }
 }

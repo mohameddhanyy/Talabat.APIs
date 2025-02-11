@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using StackExchange.Redis;
 using Talabat.APIs.CustomMiddleware;
 using Talabat.APIs.Errors;
@@ -26,6 +27,10 @@ namespace Talabat.APIs
             #region Configre Services 
             //Add services to the container.
             webApplicationBuilder.Services.AddControllers();
+            //.AddNewtonsoftJson(option =>
+            //{
+            //    option.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; 
+            //});
 
             webApplicationBuilder.Services.AddSwaggerServices();
 
