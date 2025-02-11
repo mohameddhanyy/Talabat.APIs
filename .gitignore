@@ -196,6 +196,3 @@ ClientBin/
 *.publishsettings
 node_modules/
 orleans.co
-/Talabat.APIs/obj/Debug/net6.0/Talabat.APIs.AssemblyInfo.cs
-/Talabat.APIs/obj/Debug/net6.0/Talabat.APIs.AssemblyInfoInputs.cache
-/Talabat.APIs/obj/Debug/net6.0/Talabat.APIs.csproj.AssemblyReference.cache
