@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using StackExchange.Redis;
 using Talabat.APIs.CustomMiddleware;
 using Talabat.APIs.Errors;
@@ -8,8 +9,10 @@ using Talabat.APIs.Extentions;
 using Talabat.APIs.Helpers;
 using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repositories.Contract;
+using Talabat.Core.Services.Contract;
 using Talabat.Repository.Data;
 using Talabat.Repository.Identity;
+using Talabat.Service;
 
 namespace Talabat.APIs
 {
@@ -17,15 +20,17 @@ namespace Talabat.APIs
     {
         public static async Task Main(string[] args)
         {
+            // test changes
 
-            // Start Working in Session 3
-            // Start Working in Session 4 v 2
-            // again 
             var webApplicationBuilder = WebApplication.CreateBuilder(args);
 
             #region Configre Services 
             //Add services to the container.
             webApplicationBuilder.Services.AddControllers();
+            //.AddNewtonsoftJson(option =>
+            //{
+            //    option.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; 
+            //});
 
             webApplicationBuilder.Services.AddSwaggerServices();
 
@@ -45,7 +50,8 @@ namespace Talabat.APIs
             });
 
             webApplicationBuilder.Services.AddAppServices();
-            webApplicationBuilder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>();
+
+            webApplicationBuilder.Services.AddIdentityServices(webApplicationBuilder.Configuration);
             #endregion      
 
             var app = webApplicationBuilder.Build();

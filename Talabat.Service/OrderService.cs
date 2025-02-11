@@ -8,6 +8,7 @@ using Talabat.Core.Entities;
 using Talabat.Core.Entities.Order_Aggregate;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Services.Contract;
+using Talabat.Core.Specifications.OrdersSpecifications;
 
 namespace Talabat.Service
 {
@@ -51,24 +52,36 @@ namespace Talabat.Service
             var deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetAsync(deliveryMethodId);
 
             // 5. Create Order 
-            var order = new Order(buyerEmail,shippingAddress,deliveryMethod,orderItems,subTotal);
+            var order = new Order(buyerEmail, shippingAddress, deliveryMethod, orderItems, subTotal);
             await _unitOfWork.Repository<Order>().AddAsync(order);
 
             // 6. Save Changes
             var result = await _unitOfWork.CompleteAsync();
             if (result <= 0) return null;
             return order;
-            }
-
-        public Task<Order> GetOrderByIdForUserAsync(string buyerEmail, int orderId)
-        {
-            throw new NotImplementedException();
         }
 
         public Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string buyerEmail)
         {
-            throw new NotImplementedException();
+            var ordersRepo = _unitOfWork.Repository<Order>();
+            var specs = new OrderSpecifications(buyerEmail);
+            var orders = ordersRepo.GetAllWithSpecsAsync(specs);
+            return orders;
+        }
 
+        public Task<Order?> GetOrderByIdForUserAsync(int orderId, string buyerEmail)
+        {
+            var orderRepo = _unitOfWork.Repository<Order>();
+            var specs = new OrderSpecifications(orderId, buyerEmail);
+            var order = orderRepo.GetWithSpecsAsync(specs);
+            return order;
+        }
+
+
+        public async Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
+        {
+            var deliveryMethods = _unitOfWork.Repository<DeliveryMethod>();
+            return await deliveryMethods.GetAllAsync();
         }
     }
 }
