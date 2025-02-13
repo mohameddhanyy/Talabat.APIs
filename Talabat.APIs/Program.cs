@@ -20,7 +20,7 @@ namespace Talabat.APIs
     {
         public static async Task Main(string[] args)
         {
-            // test changes
+            // test changes 2
 
             var webApplicationBuilder = WebApplication.CreateBuilder(args);
 
