@@ -15,6 +15,8 @@ namespace Talabat.APIs.Extentions
     {
         public static IServiceCollection AddAppServices(this IServiceCollection services)
         {
+            services.AddScoped(typeof(IPaymentService), typeof(PaymentService));
+
             services.AddScoped(typeof(IUnitOfWork) , typeof(UnitOfWork));
 
             services.AddScoped<IOrderService, OrderService>();
