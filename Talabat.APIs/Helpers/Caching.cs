@@ -36,7 +36,7 @@ namespace Talabat.APIs
             var executedEndPoint = await next.Invoke();
             if (executedEndPoint.Result is OkObjectResult result)
             {
-                await cachedService.CacheResponseAsync(cacheKey, result, TimeSpan.FromSeconds(_seconds));
+                await cachedService.CacheResponseAsync(cacheKey, result.Value, TimeSpan.FromSeconds(_seconds));
             }
         }
 
